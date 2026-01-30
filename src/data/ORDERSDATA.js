@@ -1,4 +1,4 @@
-const ORDERS = [
+const ORDERSDATA = [
   {
     id: "3000",
     date: "May 9, 2024",
@@ -36,4 +36,4 @@ const ORDERS = [
     amount: "US$114.99",
   },
 ]
-export default ORDERS;
+export default ORDERSDATA;

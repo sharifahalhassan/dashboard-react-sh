@@ -1,6 +1,6 @@
 import { useState } from "react";
 import OrdersTable from "../components/OrdersTable";
-import ORDERS from "../data/ORDERS";
+import ORDERSDATA from "../data/ORDERSDATA";
 import CreateOrderModal from "../components/CreateOrderModal";
 import Loader from "../components/ui/Loader";
 import ErrorState from "../components/ui/ErrorState";
@@ -9,7 +9,7 @@ export default function Orders() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [orders, setOrders] = useState(ORDERS);
+  const [orders, setOrders] = useState(ORDERSDATA);
   const handleCreateOrder = (newOrder) => {
     setOrders((prev) => [...prev, newOrder]);
     setOpen(false);
