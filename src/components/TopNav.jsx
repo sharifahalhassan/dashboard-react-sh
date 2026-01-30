@@ -50,10 +50,7 @@ export default function TopNav({ sidebarOpen, onToggleSidebar }) {
 
           {/* عناصر الجهة اليمنى */}
           <div className="ml-auto flex items-center gap-3">
-            <button className="rounded-full px-3 py-1.5 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition">
-              Support
-            </button>
-
+           
             {/* Login / Logout */}
             {!user ? (
               <button
