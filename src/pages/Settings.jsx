@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react"
-
+import { Input, Textarea, Select, Row } from "../components/form/formComponents"
+import Loader from "../components/ui/Loader"
+import ErrorState from "../components/ui/ErrorState"
 // وضعناها خارج المكوّن عشان تكون ثابتة وما تنعاد إنشاؤها بكل رندر
 const initialForm = {
   orgName: "Catalyst",
@@ -10,93 +12,13 @@ const initialForm = {
   country: "Canada",
   currency: "CAD",
 }
+console.log(Row)
+ 
 
-// مكوّن Label لعرض عنوان الحقل
-// عملناه كمكوّن منفصل لتوحيد الشكل وإعادة الاستخدام في أكثر من مكان
-function Label({ children }) {
-  return (
-    <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-      {children}
-    </div>
-  )
-}
-
-// مكوّن Help لعرض وصف/مساعدة تحت العنوان
-// يفصل منطق "الوصف" عن بقية الكود ويسهّل إعادة استخدامه
-function Help({ children }) {
-  return (
-    <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-      {children}
-    </div>
-  )
-}
-
-// مكوّن Input عام
-// استخدمناه لتقليل تكرار كتابة نفس عنصر input في كل مرة
-// ويستقبل props عشان يكون مرن لأي نوع/قيمة/أحداث
-function Input(props) {
-  return (
-    <input
-      {...props}
-      className="
-        w-full rounded-xl border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900
-        focus:outline-none focus:ring-2 focus:ring-zinc-900
-        dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-50
-        dark:focus:ring-zinc-100
-      "
-    />
-  )
-}
-
-// مكوّن Textarea عام للنصوص الطويلة
-// نفس فكرة Input: نعيد استخدامه بدل تكرار عنصر textarea
-function Textarea(props) {
-  return (
-    <textarea
-      {...props}
-      rows={4}
-      className="
-        w-full resize-none rounded-xl border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900
-        focus:outline-none focus:ring-2 focus:ring-zinc-900
-        dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-50
-        dark:focus:ring-zinc-100
-      "
-    />
-  )
-}
-
-// مكوّن Select عام للقوائم المنسدلة
-// فصلناه لتوحيد الاستخدام وتسهيل التعديل لاحقًا بمكان واحد
-function Select(props) {
-  return (
-    <select
-      {...props}
-      className="
-        w-full rounded-xl border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900
-        focus:outline-none focus:ring-2 focus:ring-zinc-900
-        dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-50
-        dark:focus:ring-zinc-100
-      "
-    />
-  )
-}
-
-// Row يمثل "سطر إعداد" كامل: عنوان + وصف + عنصر إدخال
-// عملناه عشان نقلل تكرار نفس الهيكل في كل حقل
-function Row({ title, desc, children }) {
-  return (
-    <div className="py-6 sm:grid sm:grid-cols-12 sm:items-start sm:gap-6">
-      <div className="sm:col-span-5">
-        <Label>{title}</Label>
-        <Help>{desc}</Help>
-      </div>
-      <div className="mt-4 sm:mt-0 sm:col-span-7">{children}</div>
-    </div>
-  )
-}
 
 export default function Settings() {
-
+ const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
   // حالة الفورم كاملة كـ object واحد
   // هذا يسهل حفظ/إرسال البيانات مرة واحدة بدل حالات متعددة
   const [form, setForm] = useState(initialForm)
@@ -124,6 +46,22 @@ export default function Settings() {
   function onSave(e) {
     e.preventDefault()
     console.log("Saving settings:", form)
+  }
+if (loading){
+  return <Loader/>
+}
+ if (error) {
+    return (
+      <ErrorState
+        title="Failed to load events"
+        description="Something went wrong while loading events."
+        actionLabel="Retry"
+        onAction={() => {
+          setError(false)
+          setLoading(true)
+        }}
+      />
+    )
   }
 
   return (

@@ -1,98 +1,93 @@
-import { useMemo, useState } from "react"
-import EventCard from "../components/EventCard"
-
-
-const EVENTS = [
-  {
-    id: "bear-hug",
-    name: "Bear Hug: Live in Concert",
-    dateISO: "2024-05-20T22:00:00",
-    meta: "May 20, 2024 at 10 PM · Harmony Theater, Winnipeg, MB",
-    sold: 350,
-    capacity: 500,
-    status: "On Sale",
-    imageUrl: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=240&q=60",
-  },
-  {
-    id: "six-fingers",
-    name: "Six Fingers — DJ Set",
-    dateISO: "2024-06-02T20:00:00",
-    meta: "Jun 2, 2024 at 8 PM · Moonbeam Arena, Uxbridge, ON",
-    sold: 72,
-    capacity: 150,
-    status: "On Sale",
-    imageUrl: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=240&q=60",
-  },
-  {
-    id: "we-all-look",
-    name: "We All Look The Same",
-    dateISO: "2024-08-05T16:00:00",
-    meta: "Aug 5, 2024 at 4 PM · Electric Coliseum, New York, NY",
-    sold: 275,
-    capacity: 275,
-    status: "Closed",
-    imageUrl: "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=240&q=60",
-  },
-  {
-    id: "viking-people",
-    name: "Viking People",
-    dateISO: "2024-12-31T20:00:00",
-    meta: "Dec 31, 2024 at 8 PM · Tapestry Hall, Cambridge, ON",
-    sold: 6,
-    capacity: 40,
-    status: "On Sale",
-    imageUrl: "https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?auto=format&fit=crop&w=240&q=60",
-  },
-]
-
+import { useMemo, useState } from "react";
+import EventCard from "../components/EventCard";
+import CreateEventModal from "../components/CreateEventModal";
+import EVENTS from "../data/events";
+import ErrorState from "../components/ui/ErrorState";
+import Loader from "../components/ui/Loader";
 const SORTS = [
   { key: "name", label: "Sort by name" },
   { key: "date", label: "Sort by date" },
   { key: "status", label: "Sort by status" },
-]
+];
 
 export default function Events() {
-  const [sortBy, setSortBy] = useState("name")
+  const [sortBy, setSortBy] = useState("name");
+  const [events, setEvents] = useState(EVENTS);
+  const[loading, setLoading]= useState(false)
+  const [error, setError] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState(null);
+
   const sorted = useMemo(() => {
-    const arr = [...EVENTS]
-    // فرز حسب الاسم باستخدام localeCompare لدعم المقارنة النصية بشكل صحيح
-    if (sortBy === "name") arr.sort((a, b) => a.name.localeCompare(b.name))
+    const arr = [...events];
+    if (sortBy === "name") arr.sort((a, b) => a.name.localeCompare(b.name));
+    if (sortBy === "date")
+      arr.sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
+    if (sortBy === "status")
+      arr.sort((a, b) => a.status.localeCompare(b.status));
+    return arr;
+  }, [events, sortBy]);
 
-    // فرز حسب التاريخ بتحويل dateISO إلى Date ثم المقارنة
-    if (sortBy === "date") arr.sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO))
+  // إضافة أو تعديل
+  const handleSaveEvent = (event) => {
+    setEvents((prev) => {
+      const exists = prev.find((e) => e.id === event.id);
+      if (exists) {
+        return prev.map((e) => (e.id === event.id ? event : e));
+      }
+      return [event, ...prev];
+    });
 
-    // فرز حسب الحالة (On Sale/Closed...) كمقارنة نصية
-    if (sortBy === "status") arr.sort((a, b) => a.status.localeCompare(b.status))
+    setOpen(false);
+    setEditingEvent(null);
+  };
 
-    // نرجع المصفوفة بعد الفرز
-    return arr
-  }, [
-    // إعادة الحساب فقط عند تغيّر sortBy
-    sortBy,
-  ])
+  // حذف
+  const handleDelete = (id) => {
+    if (!confirm("Are you sure you want to delete this event?")) return;
+    setEvents((prev) => prev.filter((e) => e.id !== id));
+  };
+   if (loading) {
+    return <Loader />
+  }
+  if (error) {
+    return (
+      <ErrorState
+        title="ailed to load events"
+        description="There was a problem fetching events data."
+        actionLabel="Try again"
+        onAction={() => {
+          setError(false)
+          setLoading(true)
+        }}
+      />
+    );
+  }
 
   return (
     <section className="min-w-0">
       <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold">Events</h1>
-        </div>
-        <button className="rounded-xl bg-zinc-900 px-4 py-2 text-sm font-semibold text-white hover:bg-zinc-800 transition">
+        <h1 className="text-2xl font-semibold">Events</h1>
+
+        <button
+          onClick={() => {
+            setEditingEvent(null);
+            setOpen(true);
+          }}
+          className="rounded-xl bg-zinc-900 px-4 py-2 text-sm font-semibold text-white"
+        >
           Create event
         </button>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      <div className="mt-4 flex gap-2">
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+          className="rounded-lg border px-3 py-2 text-sm text-black"
         >
           {SORTS.map((s) => (
-            <option
-              key={s.key}
-              value={s.key}
-            >
+            <option key={s.key} value={s.key}>
               {s.label}
             </option>
           ))}
@@ -104,9 +99,40 @@ export default function Events() {
           <EventCard
             key={ev.id}
             event={ev}
+            actions={
+              <>
+                <button
+                  onClick={() => {
+                    setEditingEvent(ev);
+                    setOpen(true);
+                  }}
+                  className="rounded-lg bg-zinc-800 px-2 py-1 text-xs text-white hover:bg-zinc-700"
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => handleDelete(ev.id)}
+                  className="rounded-lg bg-red-600 px-2 py-1 text-xs text-white hover:bg-red-500"
+                >
+                  Delete
+                </button>
+              </>
+            }
           />
         ))}
       </div>
+
+      {open && (
+        <CreateEventModal
+          event={editingEvent}
+          onClose={() => {
+            setOpen(false);
+            setEditingEvent(null);
+          }}
+          onSubmit={handleSaveEvent}
+        />
+      )}
     </section>
-  )
+  );
 }

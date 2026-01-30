@@ -36,6 +36,8 @@ const secondaryItems = [
 ];
 
 export default function Sidebar({ onNavigate }) {
+  const user = JSON.parse(localStorage.getItem("user"))
+
   // onNavigate: callback اختياري
   // نستخدمه غالبًا لإغلاق السايدبار على الجوال بعد الضغط على رابط
   // لذلك استخدمنا optional chaining عند استدعائه
@@ -151,16 +153,17 @@ export default function Sidebar({ onNavigate }) {
               alt="User avatar"
               className="h-9 w-9 rounded-full"
             />
-            <div className="min-w-0 text-left">
-              {/* اسم المستخدم */}
-              <div className="text-sm font-medium text-zinc-900 dark:text-zinc-50 truncate">
-                Erica Mason
-              </div>
-              {/* بريد المستخدم */}
-              <div className="text-xs text-zinc-600 dark:text-zinc-400 truncate">
-                erica@example.com
-              </div>
-            </div>
+          <div className="min-w-0 text-left">
+  <div className="text-sm font-medium text-zinc-900 dark:text-zinc-50 truncate">
+    {user?.name || "Guest"}
+  </div>
+  {user?.email && (
+    <div className="text-xs text-zinc-600 dark:text-zinc-400 truncate">
+      {user.email}
+    </div>
+  )}
+</div>
+
           </button>
         </div>
       </div>

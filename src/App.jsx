@@ -7,7 +7,7 @@ import Orders from "./pages/Orders";
 import Overview from "./pages/Overview";
 import Events from "./pages/Events";
 import Settings from "./pages/Settings";
-
+import NavigationLoader from "./components/ui/NavigationLoader";
 export default function App() {
 
   // حالة للتحكم في هل السايدبار مفتوح أو مغلق
@@ -15,7 +15,8 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    // نمرر له السايدبار، التوب بار، وحالة السايدبار
+    <>
+    <NavigationLoader/>
     <SidebarLayout
       // هنا نحدد مكوّن السايدبار نفسه
       sidebar={<Sidebar />}
@@ -42,6 +43,6 @@ export default function App() {
         <Route path="/settings" element={<Settings/>} />
       </Routes>
 
-    </SidebarLayout>
+    </SidebarLayout> </>
   );
 }
