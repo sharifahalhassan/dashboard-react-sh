@@ -1,5 +1,5 @@
 
-const EVENTS = [
+const EVENTSDATA = [
   {
     id: "bear-hug",
     name: "Bear Hug: Live in Concert",
@@ -41,4 +41,4 @@ const EVENTS = [
     imageUrl: "https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?auto=format&fit=crop&w=240&q=60",
   },
 ]
-export default EVENTS;
+export default EVENTSDATA;

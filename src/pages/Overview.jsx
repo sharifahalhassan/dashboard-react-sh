@@ -1,7 +1,7 @@
 import RangeTabs from "../components/RangeTabs.jsx";
 import StatCards from "../components/StatCards";
 import OrdersTable from "../components/OrdersTable";
-import DASH_DATA from "../data/Dash_data.js";
+import DASH_DATA from "../data/DASHDATA.js";
 import { useMemo, useState } from "react";
 import Loader from "../components/ui/Loader.jsx";
 import ErrorState from "../components/ui/ErrorState.jsx";

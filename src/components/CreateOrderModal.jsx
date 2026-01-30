@@ -1,5 +1,5 @@
 import { useState } from "react"
-import EVENTS from "../data/events"
+import EVENTS from "../data/EVENTSDATA"
 
 import Input from "../components/form/Input"
 import Select from "../components/form/Select"

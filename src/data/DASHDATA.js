@@ -1,5 +1,5 @@
 
-const DASH_DATA = {
+const DASHDATA = {
   week: {
     stats: [
       { label: "Total revenue", value: "$120K", delta: "+4.5% from last week" },
@@ -149,4 +149,4 @@ const DASH_DATA = {
     ],
   },
 };
-export default DASH_DATA;
+export default DASHDATA;

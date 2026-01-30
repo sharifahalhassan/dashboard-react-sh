@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import EventCard from "../components/EventCard";
 import CreateEventModal from "../components/CreateEventModal";
-import EVENTS from "../data/events";
+import EVENTSDATA from "../data/EVENTSDATA";
 import ErrorState from "../components/ui/ErrorState";
 import Loader from "../components/ui/Loader";
 const SORTS = [
@@ -12,7 +12,7 @@ const SORTS = [
 
 export default function Events() {
   const [sortBy, setSortBy] = useState("name");
-  const [events, setEvents] = useState(EVENTS);
+  const [events, setEvents] = useState(EVENTSDATA);
   const[loading, setLoading]= useState(false)
   const [error, setError] = useState(false);
   const [open, setOpen] = useState(false);
