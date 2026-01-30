@@ -1,8 +1,5 @@
-// استيراد useState لإدارة حالة الفورم داخل المكوّن
-// واستيراد useMemo لحساب قيمة مشتقة (derived) بدون إعادة حساب غير ضرورية
 import { useMemo, useState } from "react"
 
-// بيانات ابتدائية للفورم
 // وضعناها خارج المكوّن عشان تكون ثابتة وما تنعاد إنشاؤها بكل رندر
 const initialForm = {
   orgName: "Catalyst",
@@ -134,35 +131,25 @@ export default function Settings() {
       <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
         Settings
       </h1>
-
-      {/* Divider تحت العنوان */}
       <div className="mt-6 h-px bg-zinc-200 dark:bg-zinc-800" />
-
-      {/* ربطنا الفورم بدالة onSave عشان تستقبل submit */}
       <form onSubmit={onSave} className="mt-2">
         <Row
           title="Organization Name"
           desc="This will be displayed on your public profile."
         >
           <Input
-            // ربطنا القيمة بحالة الفورم (Controlled Component)
-            // عشان يكون مصدر الحقيقة هو state
             value={form.orgName}
-            // عند التغيير نحدث نفس المفتاح داخل الفورم
             onChange={(e) => update("orgName", e.target.value)}
             placeholder="Organization name"
           />
         </Row>
-
         <div className="h-px bg-zinc-200 dark:bg-zinc-800" />
-
         <Row
           title="Organization Bio"
           desc="This will be displayed on your public profile. Maximum 240 characters."
         >
           <div className="space-y-2">
             <Textarea
-              // نفس فكرة التحكم: قيمة textarea من state
               value={form.bio}
               // قصّينا النص إلى 240 حرف لضمان عدم تجاوز الحد
               // slice(0, 240) يضمن حتى لو المستخدم لصق نص طويل ما يتجاوز الحد
@@ -177,7 +164,6 @@ export default function Settings() {
         </Row>
 
         <div className="h-px bg-zinc-200 dark:bg-zinc-800" />
-
         <Row
           title="Organization Email"
           desc="This is how customers can contact you for support."

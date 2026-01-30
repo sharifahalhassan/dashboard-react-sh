@@ -1,30 +1,16 @@
-// استيراد useState لإدارة حالة الفرز (sortBy) داخل المكوّن
-// واستيراد useMemo لحساب قائمة مرتبة (sorted) فقط عند تغيّر sortBy
 import { useMemo, useState } from "react"
-
-// استيراد مكوّن EventCard المسؤول عن عرض بطاقة حدث واحدة
-// نستخدمه لتقسيم الواجهة: صفحة Events تعرض قائمة، و EventCard يعرض التفاصيل لكل عنصر
 import EventCard from "../components/EventCard"
 
-// بيانات الأحداث (Mock Data)
-// وضعناها خارج المكوّن عشان تكون ثابتة وما تنعاد إنشاءها مع كل رندر
+
 const EVENTS = [
   {
-    // id: معرّف فريد للحدث (يُستخدم للـ key وأحيانًا للروابط/الروت)
     id: "bear-hug",
-    // name: اسم الحدث المعروض للمستخدم
     name: "Bear Hug: Live in Concert",
-    // dateISO: تاريخ ووقت الحدث بصيغة ISO (مفيد للفرز والتحويل لتاريخ)
     dateISO: "2024-05-20T22:00:00",
-    // meta: نص جاهز لعرض تفاصيل مختصرة (تاريخ + وقت + مكان)
     meta: "May 20, 2024 at 10 PM · Harmony Theater, Winnipeg, MB",
-    // sold: عدد التذاكر المباعة
     sold: 350,
-    // capacity: السعة الكلية للتذاكر
     capacity: 500,
-    // status: حالة الحدث (مثل On Sale / Closed)
     status: "On Sale",
-    // imageUrl: صورة الحدث لعرضها داخل البطاقة
     imageUrl: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=240&q=60",
   },
   {
@@ -59,9 +45,6 @@ const EVENTS = [
   },
 ]
 
-// خيارات الفرز المتاحة للمستخدم
-// key: القيمة التي نخزنها في sortBy ونبني عليها منطق الفرز
-// label: النص المعروض داخل الـ select
 const SORTS = [
   { key: "name", label: "Sort by name" },
   { key: "date", label: "Sort by date" },
@@ -69,18 +52,9 @@ const SORTS = [
 ]
 
 export default function Events() {
-  // sortBy: يحدد نوع الفرز الحالي
-  // القيمة الافتراضية "name" تعني الفرز حسب الاسم
   const [sortBy, setSortBy] = useState("name")
-
-  // sorted: قائمة الأحداث بعد تطبيق الفرز حسب sortBy
-  // useMemo استخدمناه عشان ما نعيد فرز القائمة في كل رندر
-  // فقط عندما تتغير sortBy
   const sorted = useMemo(() => {
-    // نسخنا EVENTS إلى arr عشان ما نعدل في المصدر الأصلي
-    // لأن sort() يغيّر المصفوفة نفسها (mutates) فلابد ننسخ
     const arr = [...EVENTS]
-
     // فرز حسب الاسم باستخدام localeCompare لدعم المقارنة النصية بشكل صحيح
     if (sortBy === "name") arr.sort((a, b) => a.name.localeCompare(b.name))
 
@@ -98,53 +72,37 @@ export default function Events() {
   ])
 
   return (
-    // صفحة Events: تعرض عنوان + زر إنشاء + فلتر فرز + قائمة البطاقات
     <section className="min-w-0">
       <div className="flex items-start justify-between gap-4">
         <div>
-          {/* عنوان الصفحة */}
           <h1 className="text-2xl font-semibold">Events</h1>
         </div>
-
-        {/* زر إنشاء حدث جديد */}
-        {/* حاليًا بدون onClick، غالبًا لاحقًا ينقل لصفحة إنشاء أو يفتح مودال */}
         <button className="rounded-xl bg-zinc-900 px-4 py-2 text-sm font-semibold text-white hover:bg-zinc-800 transition">
           Create event
         </button>
       </div>
 
-      {/* منطقة التحكم بالفرز */}
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <select
-          // ربط قيمة select بحالة sortBy (Controlled Component)
           value={sortBy}
-          // عند التغيير نحدّث sortBy وبالتالي يعاد حساب sorted
           onChange={(e) => setSortBy(e.target.value)}
           className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900"
         >
-          {/* توليد خيارات الفرز من SORTS */}
           {SORTS.map((s) => (
             <option
-              // key ضروري في القوائم
               key={s.key}
-              // القيمة التي ستُرسل عند الاختيار
               value={s.key}
             >
-              {/* النص المعروض للمستخدم */}
               {s.label}
             </option>
           ))}
         </select>
       </div>
 
-      {/* قائمة الأحداث */}
       <div className="mt-6 space-y-4">
-        {/* نعرض EventCard لكل حدث بعد تطبيق الفرز */}
         {sorted.map((ev) => (
           <EventCard
-            // key ضروري لتتبع العناصر
             key={ev.id}
-            // تمرير بيانات الحدث للبطاقة لتقوم بعرضه
             event={ev}
           />
         ))}

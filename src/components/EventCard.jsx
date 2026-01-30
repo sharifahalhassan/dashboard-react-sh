@@ -1,5 +1,4 @@
 function StatusBadge({
-  // status: نص حالة الحدث مثل "On Sale" أو "Closed"
   // نستخدمه لعرض شارة (Badge) توضح حالة الحدث بشكل سريع
   status,
 }) {
@@ -9,8 +8,6 @@ function StatusBadge({
 
   return (
     <span
-      // نستخدم مصفوفة + join لبناء className بشكل شرطي
-      // حتى نغيّر شكل الشارة حسب حالة الحدث (مغلق أو متاح)
       className={[
         "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold border",
         // إذا الحدث مغلق نعرض نمط "محايد"
@@ -26,7 +23,6 @@ function StatusBadge({
 }
 
 export default function EventCard({
-  // event: كائن يحتوي تفاصيل الحدث (اسم، تاريخ، مبيعات، صورة، حالة...)
   // المكوّن يعتمد عليه بالكامل لعرض بطاقة واحدة
   event,
 }) {

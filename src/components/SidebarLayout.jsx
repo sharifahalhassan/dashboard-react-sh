@@ -1,17 +1,10 @@
-// استيراد useEffect من React
-// نستخدمه لتنفيذ تأثيرات جانبية (Side Effects) مثل التعامل مع DOM
 import { useEffect } from "react";
 
 export default function SidebarLayout({
-  // sidebar: محتوى/مكوّن السايدبار الذي سيتم حقنه داخل الـ Layout
   sidebar,
-  // topbar: محتوى/مكوّن الشريط العلوي الذي سيتم حقنه داخل الـ Layout
   topbar,
-  // children: محتوى الصفحات (المسارات) الذي سيتم عرضه داخل الـ Layout
   children,
-  // sidebarOpen: حالة تحدد هل السايدبار مفتوح أو مغلق
   sidebarOpen,
-  // setSidebarOpen: دالة لتغيير حالة السايدبار من المكوّن الأب
   setSidebarOpen,
 }) {
   useEffect(() => {
@@ -22,7 +15,6 @@ export default function SidebarLayout({
     const prev = document.body.style.overflow;
 
     // عند فتح السايدبار (خصوصًا على الجوال) نقفل سكرول الصفحة بالخلف
-    // هذا يمنع المستخدم من تمرير المحتوى وراء الـ overlay
     document.body.style.overflow = "hidden";
 
     // cleanup: يرجّع overflow كما كان عند إغلاق السايدبار أو عند إزالة المكوّن
@@ -30,7 +22,6 @@ export default function SidebarLayout({
       document.body.style.overflow = prev;
     };
   }, [
-    // نربط التأثير بتغيير sidebarOpen
     // يعني ينفّذ/ينظّف كل مرة تتغير فيها حالة فتح/إغلاق السايدبار
     sidebarOpen,
   ]);
@@ -39,7 +30,6 @@ export default function SidebarLayout({
     <div className="min-h-screen bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50 overflow-x-hidden">
       {/* Mobile overlay */}
       <div
-        // نستخدم مصفوفة + join لبناء className بشكل شرطي
         // الفكرة: نفس العنصر يتغير سلوكه حسب sidebarOpen بدون تكرار markup
         className={[
           // overlay يغطي الشاشة كاملة فوق المحتوى على الشاشات الصغيرة
@@ -58,7 +48,6 @@ export default function SidebarLayout({
 
       {/* Mobile sidebar (off-canvas) */}
       <div
-        // نفس أسلوب بناء className الشرطي
         // هذا هو السايدبار الخاص بالجوال (ينزلق من اليسار)
         className={[
           "fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw]",

@@ -49,17 +49,10 @@ export default function Sidebar({ onNavigate }) {
             const Icon = item.icon;
             return (
               <NavLink
-                // key ضروري في React عند إنشاء قائمة عناصر
                 key={item.to}
-                // to هو المسار الذي سينتقل له الرابط
                 to={item.to}
-                // end للتحكم في منطق "نشط" لمسار "/"
                 end={item.end}
-                // عند الضغط: إذا كان onNavigate موجود نناديه
-                // علامة ?. تمنع الخطأ إذا onNavigate غير مُرسل
                 onClick={() => onNavigate?.()}
-                // className هنا عبارة عن function ترجع class بناءً على isActive
-                // isActive تقدمه NavLink تلقائيًا لمعرفة إذا هذا الرابط يمثل الصفحة الحالية
                 className={({ isActive }) =>
                   [
                     "group w-full flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition",
@@ -74,7 +67,6 @@ export default function Sidebar({ onNavigate }) {
                 {({ isActive }) => (
                   <>
                     <Icon
-                      // نفس فكرة className الشرطي لكن للأيقونة
                       // نغير العرض حسب كون الرابط نشط أو لا
                       className={[
                         "h-5 w-5 shrink-0 transition",

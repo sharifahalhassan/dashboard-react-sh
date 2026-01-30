@@ -1,5 +1,3 @@
-// استيراد أيقونة السهم من heroicons
-// نستخدمها كزر مرئي للتحكم في فتح وإغلاق السايدبار
 import { ChevronLeftIcon } from "@heroicons/react/24/outline"
 
 export default function TopNav({
@@ -16,7 +14,6 @@ export default function TopNav({
         <div className="flex h-16 items-center gap-3">
           {/* زر التحكم في فتح/إغلاق السايدبار */}
           <button
-            // type="button" لمنع أي سلوك افتراضي غير مرغوب
             type="button"
             // عند الضغط نستدعي الدالة القادمة من الأب
             onClick={onToggleSidebar}
@@ -25,7 +22,6 @@ export default function TopNav({
             aria-label="Toggle sidebar"
           >
             <ChevronLeftIcon
-              // نستخدم مصفوفة + join لبناء className بشكل ديناميكي
               // دوران الأيقونة يعتمد على حالة السايدبار
               className={[
                 "h-5 w-5 transition-transform duration-300 ease-out text-zinc-900 dark:text-zinc-50",
@@ -36,8 +32,6 @@ export default function TopNav({
             />
           </button>
 
-          {/* عنوان الصفحة الحالية */}
-          {/* حاليًا ثابت "Dashboard" ويمكن لاحقًا ربطه بالراوت */}
           <h1 className="font-semibold text-lg text-zinc-900 dark:text-zinc-50">
             Dashboard
           </h1>
@@ -45,12 +39,10 @@ export default function TopNav({
           {/* عناصر الجهة اليمنى من التوب بار */}
           <div className="ml-auto flex items-center gap-3">
             {/* زر دعم */}
-            {/* غالبًا لاحقًا يتم ربطه بصفحة أو مودال دعم */}
             <button className="rounded-full px-3 py-1.5 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 transition">
               Support
             </button>
 
-            {/* دائرة تمثل صورة المستخدم */}
             {/* Placeholder حاليًا بدل صورة حقيقية */}
             <div className="h-8 w-8 rounded-full bg-zinc-300 dark:bg-zinc-700" />
           </div>

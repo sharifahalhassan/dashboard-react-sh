@@ -1,20 +1,12 @@
-// RangeTabs: مكوّن التبويبات/الأزرار لتغيير الفترة الزمنية (أسبوع/شهر/ربع...)
-// StatCards: مكوّن يعرض البطاقات الإحصائية (Revenue, Tickets, ...)
-// OrdersTable: مكوّن يعرض جدول الطلبات
 import RangeTabs from "../components/RangeTabs.jsx";
 import StatCards from "../components/StatCards";
 import OrdersTable from "../components/OrdersTable";
 
-// useState لإدارة الحالة (الفترة المختارة)
-// useMemo لاختيار البيانات الحالية من DASH_DATA بكفاءة عند تغيّر range فقط
 import { useMemo, useState } from "react";
 
-// بيانات لوحة التحكم (Mock Data) منظمة حسب الفترة الزمنية
-// وضعناها خارج المكوّن عشان تكون ثابتة وما تنعاد إنشاءها بكل رندر
-// وكل فترة تحتوي: stats (للبطاقات) + orders (للجدول)
+
 const DASH_DATA = {
   week: {
-    // stats: مجموعة القيم التي ستظهر في StatCards للفترة "week"
     stats: [
       { label: "Total revenue", value: "$120K", delta: "+4.5% from last week" },
       {
@@ -25,7 +17,6 @@ const DASH_DATA = {
       { label: "Tickets sold", value: "1,288", delta: "+2.1% from last week" },
       { label: "Pageviews", value: "183,067", delta: "+9.2% from last week" },
     ],
-    // orders: الطلبات التي ستظهر في OrdersTable للفترة "week"
     orders: [
       {
         id: "3000",
@@ -166,8 +157,6 @@ const DASH_DATA = {
 };
 
 export default function Overview() {
-  // range: الفترة الزمنية المختارة (week افتراضيًا)
-  // setRange: دالة لتغيير الفترة عند اختيار المستخدم من RangeTabs
   const [range, setRange] = useState("week");
 
   // current: البيانات الحالية بناءً على range
@@ -177,39 +166,23 @@ export default function Overview() {
 
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-      {/* Left column 
-      // هذا جزء جانبي كان مخطط له لعرض UpcomingEvents
-      // تم تعليقه الآن (commented) ربما لأن التصميم تغيّر أو سيتم تفعيله لاحقًا
-      <aside className="lg:col-span-4">
-        <UpcomingEvents />
-      </aside>
-*/}
+   
       {/* Main column */}
       <section className="w-auto lg:col-span-12">
         <div className="mb-6">
-          {/* تحية وعنوان أعلى الصفحة */}
           <h1 className="text-2xl font-semibold">Good afternoon, Erica</h1>
         </div>
 
         <div className="mb-6 flex items-center justify-between gap-3">
-          {/* عنوان قسم الملخص */}
           <h2 className="text-sm font-semibold ">Overview</h2>
-
-          {/* RangeTabs يتحكم في range */}
-          {/* value=range: التبويب النشط */}
-          {/* onChange=setRange: لما المستخدم يغير التبويب نحدث الحالة */}
           <RangeTabs value={range} onChange={setRange} />
         </div>
 
         <div className="min-w-0 mt-6">
-          {/* عرض البطاقات الإحصائية للفترة المختارة */}
-          {/* نمرر current.stats لأنها تتغير حسب range */}
           <StatCards stats={current.stats} />
         </div>
 
         <div className="min-w-0 mt-8">
-          {/* عرض جدول الطلبات للفترة المختارة */}
-          {/* نمرر current.orders لأنها تتغير حسب range */}
           <OrdersTable rows={current.orders} />
         </div>
       </section>

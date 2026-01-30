@@ -1,24 +1,12 @@
-// استيراد مكوّن جدول الطلبات
-// نستخدمه لعرض البيانات (الطلبات) بشكل منظم داخل جدول بدل ما نكتب الجدول هنا
 import OrdersTable from "../components/OrdersTable"
-
-// بيانات تجريبية للطلبات (Mock Data)
-// وضعناها كثابت خارج المكوّن عشان ما تنعاد إنشاء البيانات بكل رندر
-// وتكون نفس المرجع (reference) ثابت إذا ما احتجنا نغيّرها
 const ORDERS = [
   {
-    // id: رقم/معرّف الطلب
     id: "3000",
-    // date: تاريخ إنشاء/تنفيذ الطلب
     date: "May 9, 2024",
-    // customer: اسم العميل الذي قام بالطلب
     customer: "Leslie Alexander",
-    // eventName: اسم الفعالية المرتبطة بالطلب
     eventName: "Bear Hug: Live in Concert",
-    // eventImg: صورة مصغّرة للفعالية
     eventImg:
       "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=96&q=60",
-    // amount: قيمة الطلب المعروضة كنص (مع العملة)
     amount: "US$80.00",
   },
   {
@@ -55,19 +43,13 @@ export default function Orders() {
   return (
     <section className="min-w-0">
       <div className="flex items-start justify-between gap-4">
-        {/* عنوان الصفحة */}
         <h1 className="text-2xl font-semibold">Orders</h1>
-
-        {/* زر إنشاء طلب جديد */}
-        {/* حاليًا ما فيه onClick، غالبًا لاحقًا يتم ربطه بفتح مودال أو الانتقال لصفحة إنشاء */}
         <button className="rounded-xl bg-zinc-900 px-4 py-2 text-sm font-semibold text-white hover:bg-zinc-800 transition">
           Create order
         </button>
       </div>
 
       <div className="mt-6">
-        {/* تمرير بيانات الطلبات إلى مكوّن OrdersTable */}
-        {/* rows هي الـ props التي يعتمد عليها OrdersTable لعرض الصفوف */}
         <OrdersTable rows={ORDERS} />
       </div>
     </section>
